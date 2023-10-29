@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp.Bank.Models
 {
-    internal class Bank : IAccount
+    internal class Bank 
     {
         private string[] accounts { get; set; }
 

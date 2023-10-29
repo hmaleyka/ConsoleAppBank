@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp.Bank.Models
 {
-    internal enum Operation
+    internal enum Operation 
     {
         CreateAccount = 1,
         DepositMoney,

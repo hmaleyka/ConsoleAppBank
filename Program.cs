@@ -1,4 +1,5 @@
-﻿using ConsoleApp.Bank.Models;
+﻿using Bank.Consoleapp.Exceptions;
+using ConsoleApp.Bank.Models;
 
 namespace Bank.Consoleapp.Models.AccountModels
 {
@@ -8,7 +9,7 @@ namespace Bank.Consoleapp.Models.AccountModels
         {
             
             //BankAccount account = new BankAccount(1, "checking", "eur");
-            BankAccount account = new BankAccount(1, "checking" , "AZN");
+            BankAccount account = new BankAccount();
             
             bool check = true;
 
@@ -49,15 +50,33 @@ namespace Bank.Consoleapp.Models.AccountModels
                             Console.WriteLine("-------------------------------------------------------------");
                             Console.WriteLine("Enter Currency Type (1 - AZN, 2 - USD, 3 - EUR):");
                             int currencyType = Convert.ToInt32(Console.ReadLine());
-                            if (currencyType > 0 && currencyType < 4)
+                            Console.WriteLine("enter your age:");
+                            int age = Convert.ToInt32(Console.ReadLine());
+                            Console.WriteLine("Enter your ID");
+                            int accountid = Convert.ToInt32(Console.ReadLine());
+                            try
                             {
-                                account.CreateAccount((AccountType)accountType, (CurrencyType)currencyType);
-                                Console.WriteLine($"The bank account was created: accountID: {account.AccountId}");
+                                if (currencyType > 0 && currencyType < 4)
+                                {
+                                    account.CreateAccount((AccountType)accountType, (CurrencyType)currencyType, accountid, age);
+                                    Console.WriteLine($"The bank account was created: accountID: {account.AccountId}");
+                                }
+
+                                else
+                                {
+                                    Console.WriteLine("Invalid currency type, Try again");
+                                }
                             }
-                            else
+                            catch (InvalidID)
                             {
-                                Console.WriteLine("Invalid currency type, Try again");
+                                Console.WriteLine("ID should be greater than zero");
                             }
+                            catch (InvalidAge)
+                            {
+                                Console.WriteLine("Age should be grater than 18");
+                            }
+
+                                
                         }
                         else
                         {
@@ -130,7 +149,7 @@ namespace Bank.Consoleapp.Models.AccountModels
                         break;
                     case (int)Operation.ListAccounts:
                         account.GetAllAccounts();
-                        Console.WriteLine("List of all accounts");
+                        
 
 
                         break;

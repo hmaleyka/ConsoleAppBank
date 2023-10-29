@@ -13,16 +13,10 @@ namespace ConsoleApp.Bank.Models
         IAccount[] accounts = new IAccount[0];
         Transaction[] transactions = new Transaction[0];
 
-        public BankAccount(int accountId, string accountType, string currencyType)
-        {
-            AccountId = accountId;
-            AccountType = accountType;
-            CurrencyType = currencyType;
-        }
+       
 
 
-
-        public void CreateAccount(AccountType accountType, CurrencyType currencyType)
+        public void CreateAccount(AccountType accountType, CurrencyType currencyType, int accountId, int Idage)
         {
             bool check;
             Console.WriteLine("let's create account for you:");
@@ -30,13 +24,18 @@ namespace ConsoleApp.Bank.Models
             Console.WriteLine("Please enter your Name for new account");
             string accountName = Console.ReadLine();
 
-            Console.WriteLine("enter your age:");
-            int age = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Enter your ID");
-            int accountid = Convert.ToInt32(Console.ReadLine());
+            bool checkage = false;
+            if (Idage>=18)
+            {
+                checkage = true;
+            }
+            if(!checkage)
+            {
+                throw new InvalidAge();
+            }
+           
             bool checkid = false;
-            if(accountid >0)
+            if(accountId >0)
             {
                 checkid = true;
             }
@@ -44,15 +43,17 @@ namespace ConsoleApp.Bank.Models
             {
                 throw new InvalidID();
             }
-            Console.WriteLine($"New account created with Account ID: {accountid}");
+           
+
+
             string accounttype = accountType.ToString();
 
             string currencytype = currencyType.ToString();
             
             IAccount account = new IAccount()
             {
-                AccountId=accountid,
-                Age = age,
+                AccountId=accountId,
+                Age = Idage,
                 Name = accountName,
                 AccountType = accounttype,
                 CurrencyType = currencytype,
@@ -233,7 +234,7 @@ namespace ConsoleApp.Bank.Models
                         break;
                 }
 
-            }
+        }
 
 
 
