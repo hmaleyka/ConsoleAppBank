@@ -8,8 +8,8 @@ namespace ConsoleApp.Bank.Models
 {
     internal enum CurrencyType
     {
-        USD = 1,
-        AZN,
+        AZN=1,
+        USD,
         EUR
     }
 }

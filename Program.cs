@@ -1,14 +1,15 @@
 ﻿using ConsoleApp.Bank.Models;
 
-namespace Bank.Consoleapp.Models
+namespace Bank.Consoleapp.Models.AccountModels
 {
     internal class Program
     {
         static void Main(string[] args)
         {
             
-            BankAccount account = new BankAccount(1, "checking", "eur");
-
+            //BankAccount account = new BankAccount(1, "checking", "eur");
+            BankAccount account = new BankAccount(1, "checking" , "AZN");
+            
             bool check = true;
 
             Console.WriteLine("Welcome to our Bank Application:");
@@ -46,34 +47,34 @@ namespace Bank.Consoleapp.Models
                         if (accountType > 0 && accountType < 4)
                         {
                             Console.WriteLine("-------------------------------------------------------------");
-                            Console.WriteLine("Enter Currency Type (1 - USD, 2 - AZN, 3 - EUR):");
+                            Console.WriteLine("Enter Currency Type (1 - AZN, 2 - USD, 3 - EUR):");
                             int currencyType = Convert.ToInt32(Console.ReadLine());
                             if (currencyType > 0 && currencyType < 4)
                             {
                                 account.CreateAccount((AccountType)accountType, (CurrencyType)currencyType);
-                                Console.WriteLine("The bank account was created:");
+                                Console.WriteLine($"The bank account was created: accountID: {account.AccountId}");
                             }
                             else
                             {
-                                Console.WriteLine("Invalid currency type.");
+                                Console.WriteLine("Invalid currency type, Try again");
                             }
                         }
                         else
                         {
-                            Console.WriteLine("Invalid account type.");
+                            Console.WriteLine("Invalid account type, Try again");
                         }
                         break;
 
                     case (int)Operation.DepositMoney:
                         Console.WriteLine("Enter Account ID:");
                         string depositAccountId = Console.ReadLine();
-                        Console.WriteLine("you login succesfully for depositing money");
                         Console.WriteLine("-------------------------------------------");
+                       
                         Console.WriteLine("Enter the amount to deposit:");
                         decimal depositAmount = Convert.ToDecimal(Console.ReadLine());
                         try
                         {
-                            account.DepositMoney(depositAccountId, depositAmount);
+                           account.DepositMoney(depositAccountId, depositAmount);
                             Console.WriteLine("Money deposited successfully.");
 
 
@@ -82,6 +83,10 @@ namespace Bank.Consoleapp.Models
                         catch (AccountNotFoundException)
                         {
                             Console.WriteLine("Account not found, Please register from the application carefully");
+                        }
+                        catch (InvalidAmountException)
+                        {
+                            Console.WriteLine("money should be greater than zero");
                         }
 
 
@@ -102,15 +107,15 @@ namespace Bank.Consoleapp.Models
                         }
                         catch (AccountNotFoundException)
                         {
-                            Console.WriteLine("Account not found.");
+                            Console.WriteLine("Account not found, Try again ");
                         }
                         catch (InvalidAmountException)
                         {
-                            Console.WriteLine("Invalid amount.");
+                            Console.WriteLine("Invalid amount, Try again");
                         }
                         catch (InsufficientFundsException)
                         {
-                            Console.WriteLine("Insufficient funds in the account.");
+                            Console.WriteLine("Insufficient funds in the account, Try again");
                         }
 
 
@@ -145,11 +150,11 @@ namespace Bank.Consoleapp.Models
                         }
                         catch (AccountNotFoundException)
                         {
-                            Console.WriteLine("Account not found.");
+                            Console.WriteLine("Account not found, Try again");
                         }
                         catch (InvalidAmountException)
                         {
-                            Console.WriteLine("Invalid amount.");
+                            Console.WriteLine("Invalid amount, Try again");
                         }
                         catch (InsufficientFundsException)
                         {
@@ -163,40 +168,24 @@ namespace Bank.Consoleapp.Models
                         Console.WriteLine("------------------------------------------------------");
                         Console.WriteLine("Enter your AccountId to exchange value");
                         int currencyAccountId = Convert.ToInt32(Console.ReadLine());
-                        Console.WriteLine("enter the value how much do you want to exchange");
-                        decimal amountfull = Convert.ToDecimal(Console.ReadLine());
+                        
+                        Console.WriteLine("Enter Process: 1 - AZN, 2 - USD, 3 - EUR:");
+                        int currencytype = Convert.ToInt32(Console.ReadLine());
+
                         try
                         {
-
-                            Console.WriteLine("Enter the your AZN value for converting currency type (1 for USD, 2 for EUR ):");
-                            int currencyChoice = Convert.ToInt32(Console.ReadLine());
-
-                            CurrencyType currencyType;
-
-                            switch (currencyChoice)
-                            {
-                                case 1:
-                                    currencyType = CurrencyType.USD;
-                                    break;
-                                case 2:
-                                    currencyType = CurrencyType.EUR;
-                                    break;
-                                
-                                default:
-                                    Console.WriteLine("Invalid currency choice");
-                                    break; ;
-                            }
-                            account.CurrencyConversion((CurrencyType)currencyChoice, currencyAccountId, amountfull);
+                            account.CurrencyConversion((CurrencyType)currencytype, currencyAccountId);
+                            Console.WriteLine( "Money successfully converted with other values:");
                                     
                         }
 
                         catch (AccountNotFoundException)
                         {
-                            Console.WriteLine("Account not found.");
+                            Console.WriteLine("Account not found, Try again");
                         }
                         catch (InvalidAmountException)
                         {
-                            Console.WriteLine("Invalid amount.");
+                            Console.WriteLine("Invalid amount, Try again");
                         }
                         break;
                     case (int)Operation.Exit:
